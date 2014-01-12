@@ -1,0 +1,1 @@
+@haxe test.hxml && neko MainTest
