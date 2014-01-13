@@ -1,3 +1,4 @@
+import parser.StringReader;
 import haxe.Log;
 import haxe.unit.TestCase;
 

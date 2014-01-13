@@ -77,7 +77,7 @@ class PsiElement
 	public function getElementAt(position:Int):PsiElement
 	{
 		var element = this.root;
-		while (root.parent != null) root = root.parent;
-		return root;
+		while (element.parent != null) element = element.parent;
+		return element;
 	}
 }

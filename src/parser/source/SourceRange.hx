@@ -1,4 +1,4 @@
-package source;
+package parser.source;
 
 class SourceRange
 {
@@ -22,11 +22,11 @@ class SourceRange
 
 	private function get_length():Int
 	{
-		return this.high - this.length;
+		return this.high - this.low;
 	}
 
 	public function toString()
 	{
-		return 'SourceRange($low:$high)'
+		return 'SourceRange($low:$high)($string)';
 	}
 }

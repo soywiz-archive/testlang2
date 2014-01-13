@@ -1,5 +1,6 @@
-package source;
+package parser.source;
 
+import parser.StringReader;
 class SourceReader
 {
 	private var source:Source;
@@ -40,7 +41,7 @@ class SourceReader
 	public function readRegexp(regexp:String):SourceRange
 	{
 		var result = this.peekRegexp(regexp);
-		this.skip(result.length);
+        this.skip(result.length);
 		return result;
 	}
 

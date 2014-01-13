@@ -21,9 +21,11 @@ class PsiElementTest extends TestCase
 		assertEquals(4 + 5, element3.offset);
 		assertEquals(1, element3.length);
 
+        /*
 		for (child in root.children)
 		{
 			Log.trace(child);
 		}
+        */
 	}
 }

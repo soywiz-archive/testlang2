@@ -11,4 +11,6 @@ interface ILinkedList<T> //implements Iterable<T>
 	function remove(element:ILinkedListElement<T>):Void;
 	function addFirst(value:T):ILinkedListElement<T>;
 	function addLast(value:T):ILinkedListElement<T>;
+
+    function iterator():Iterator<T>;
 }

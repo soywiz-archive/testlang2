@@ -78,7 +78,7 @@ class LinkedList<T> implements ILinkedList<T>
 
 	public function iterator() : Iterator<T>
 	{
-		return new ElementIterator<T>(head);
+		return new ElementIterator<T>(cast head);
 	}
 }
 
@@ -99,7 +99,7 @@ private class ElementIterator<T>
 	public function next():T
 	{
 		var result = this.element.value;
-		this.element = element.next;
+		this.element = cast element.next;
 		return result;
 	}
 }

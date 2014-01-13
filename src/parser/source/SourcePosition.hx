@@ -1,4 +1,4 @@
-package source;
+package parser.source;
 
 class SourcePosition
 {
