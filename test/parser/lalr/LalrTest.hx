@@ -62,4 +62,15 @@ class LalrTest extends TestCase
 
         assertEquals("{[null:],{[terminal:2],[terminal:2],[terminal:2],[terminal:2]}}", Std.string(optionalOneAndListTwo.tryParse(SourceReader.fromString('2222'))));
     }
+
+    public function testBranches()
+    {
+        var type11OrType12 = Lalr.or([
+            Lalr.sequence([Lalr.literal('1'), Lalr.literal('1')], 'type11'),
+            Lalr.sequence([Lalr.literal('1'), Lalr.literal('2')], 'type12')
+        ]);
+
+        assertEquals("type11:{[terminal:1],[terminal:1]}", Std.string(type11OrType12.tryParse(SourceReader.fromString('11'))));
+        assertEquals("type12:{[terminal:1],[terminal:2]}", Std.string(type11OrType12.tryParse(SourceReader.fromString('12'))));
+    }
 }

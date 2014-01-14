@@ -186,6 +186,16 @@ class ContainerNode extends Node
 
 class OrNode extends ContainerNode
 {
+    public function new(nodes:Array<Node> = null, ?tag:TagType)
+    {
+        super(optimize(nodes), tag);
+    }
+
+    private function optimize(nodes:Array<Node>):Array<Node>
+    {
+        return nodes;
+    }
+
     override public function canParse(sourceReader:SourceReader):Bool
     {
         if (nodes.length < 1) throw('Invalid OrNode without elements');
@@ -202,7 +212,7 @@ class OrNode extends ContainerNode
                 return node.parse(sourceReader);
             }
         }
-        throw('Cant parse');
+        throw('Cant parse any of');
     }
 }
 
