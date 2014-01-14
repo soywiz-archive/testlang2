@@ -15,6 +15,14 @@ class SourceRange
 		this.high = high;
 	}
 
+    static public function combine(sourceRangeList:Array<SourceRange>):SourceRange
+    {
+        return Lambda.fold(sourceRangeList, function(a:SourceRange, b:SourceRange):SourceRange
+        {
+            return new SourceRange(a.source, MathInt.min(a.low, b.low), MathInt.max(a.high, b.high));
+        }, sourceRangeList[0]);
+    }
+
 	private function get_string():String
 	{
 		return this.source.string.substr(this.low, this.high - this.low);

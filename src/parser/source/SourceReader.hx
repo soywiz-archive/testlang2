@@ -14,6 +14,11 @@ class SourceReader
 		this.stringReader = new StringReader(source.string);
 	}
 
+    static public function fromString(string:String):SourceReader
+    {
+        return new SourceReader(new Source(string));
+    }
+
 	public function peek(count:Int):SourceRange
 	{
 		var start:Int = this.stringReader.offset;
