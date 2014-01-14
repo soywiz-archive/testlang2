@@ -19,6 +19,8 @@ class SourceRange
     {
         return Lambda.fold(sourceRangeList, function(a:SourceRange, b:SourceRange):SourceRange
         {
+            if (a == null) return b;
+            if (b == null) return a;
             return new SourceRange(a.source, MathInt.min(a.low, b.low), MathInt.max(a.high, b.high));
         }, sourceRangeList[0]);
     }

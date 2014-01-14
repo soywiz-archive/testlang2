@@ -55,4 +55,11 @@ class LalrTest extends TestCase
 
         assertEquals("list:{[terminal:1],[terminal:2],[terminal:1],[terminal:1],[terminal:1],[terminal:1],[terminal:2],[terminal:2]}", Std.string(oneOrTwoListNode.tryParse(SourceReader.fromString('121111223'))));
     }
+
+    public function testOptional()
+    {
+        var optionalOneAndListTwo = Lalr.sequence([Lalr.optional(Lalr.literal('1')), Lalr.repeatOneOrMore(Lalr.literal('2'))]);
+
+        assertEquals("{[null:],{[terminal:2],[terminal:2],[terminal:2],[terminal:2]}}", Std.string(optionalOneAndListTwo.tryParse(SourceReader.fromString('2222'))));
+    }
 }

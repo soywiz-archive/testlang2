@@ -34,9 +34,35 @@ class Lalr
         return new OrNode(nodes);
     }
 
-    static public function repeatOneOrMore(node:Node, tag:TagType):Node
+    static public function optional(node:Node, ?tag:TagType):Node
+    {
+        return new OptionalNode(node);
+    }
+
+    static public function repeatOneOrMore(node:Node, ?tag:TagType):Node
     {
         return new RepeatOneOrMoreNode(node, tag);
+    }
+}
+
+class OptionalNode extends Node
+{
+    private var node:Node;
+
+    public function new(node:Node)
+    {
+        this.node = node;
+    }
+
+    override public function canParse(sourceReader:SourceReader):Bool
+    {
+        return true;
+    }
+
+    override public function parse(sourceReader:SourceReader):LalrResultNode
+    {
+        if (!node.canParse(sourceReader)) return LalrResultNode.fromEmpty(sourceReader);
+        return node.parse(sourceReader);
     }
 }
 
@@ -72,6 +98,7 @@ class LalrResultNode
 {
     public var sourceRange(default, null):SourceRange;
     public var tag(default, null):TagType;
+    public var empty(default, null):Bool;
     public var children:Array<LalrResultNode>;
 
     public var isLeaf(get, never):Bool;
@@ -83,7 +110,7 @@ class LalrResultNode
 
     private function new() { }
 
-    static public function fromSourceRangeAndTag(sourceRange:SourceRange, ?tag:TagType)
+    static public function fromSourceRangeAndTag(sourceRange:SourceRange, ?tag:TagType):LalrResultNode
     {
         var resultNode = new LalrResultNode();
         resultNode.sourceRange = sourceRange;
@@ -91,14 +118,19 @@ class LalrResultNode
         return resultNode;
     }
 
-    static public function fromChildList(children:Array<LalrResultNode>, ?tag:TagType)
+    static public function fromChildList(children:Array<LalrResultNode>, ?tag:TagType):LalrResultNode
     {
         var resultNode = new LalrResultNode();
-
-        SourceRange.combine(children.map(function(child:LalrResultNode) { return child.sourceRange; }));
-
+        resultNode.sourceRange = SourceRange.combine(children.map(function(child:LalrResultNode) { return child.sourceRange; }));
         resultNode.children = children;
         resultNode.tag = tag;
+        return resultNode;
+    }
+
+    static public function fromEmpty(sourceReader:SourceReader):LalrResultNode
+    {
+        var resultNode = fromSourceRangeAndTag(sourceReader.peek(0));
+        resultNode.empty = true;
         return resultNode;
     }
 
@@ -116,10 +148,9 @@ class Node
 {
 	//private var nextNodes:Array<Node>;
 
-    public function tryParse(sourceReader:SourceReader):LalrResultNode
+    public inline function tryParse(sourceReader:SourceReader):LalrResultNode
     {
-        if (!canParse(sourceReader)) return null;
-        return parse(sourceReader);
+        return canParse(sourceReader) ? parse(sourceReader) : null;
     }
 
     public function canParse(sourceReader:SourceReader):Bool
